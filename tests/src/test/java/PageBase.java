@@ -17,6 +17,7 @@ class PageBase {
     protected By accountManagerDropdown = By.xpath("//ul[@id='login_wrapper']/li/a[@href='index.php?route=account/account']");
     protected By textContainerOfAccountButton = By.xpath("//ul[@id='login_wrapper']/li/a[@href='index.php?route=account/account']//span");
     protected By logoutButton = By.xpath("//ul[@id='login_wrapper']/li//a[@href='index.php?route=account/logout']");
+    protected By goToAccountPageButton = By.xpath("//a[@href='index.php?route=account/account'][@title='Fiók']");
     protected By logo = By.xpath("//div[@id='logo']//img[@title='Cartographia Kft.']");
     protected By pageTilte = By.xpath("//h1");
 
@@ -43,6 +44,7 @@ class PageBase {
     public WebElement getAccountManagerButton() {
         return this.waitAndReturnElement(accountManagerDropdown);
     }
+
     public String getTextOfLoginPageButton() {
         return this.waitAndReturnElement(goToLoginPageButton).getText();
     }
@@ -55,6 +57,12 @@ class PageBase {
         dropDownAndClickButton(accountManagerDropdown, logoutButton);
 
         return new LoginPage(this.driver);
+    }
+
+    public AccountPage goToAccountPage() {
+        dropDownAndClickButton(accountManagerDropdown, goToAccountPageButton);
+
+        return new AccountPage(this.driver);
     }
 
     public LoginPage goToLoginPage() {

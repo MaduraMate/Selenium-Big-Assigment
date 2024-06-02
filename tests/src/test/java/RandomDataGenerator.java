@@ -11,7 +11,7 @@ public class RandomDataGenerator {
 
     public static void createRandomPerson() {
         Person person = fairy.person(PersonProperties.male());
-        try (PrintWriter printWriter = new PrintWriter(new File("DataForTest.txt"))) {
+        try (PrintWriter printWriter = new PrintWriter(new File("resources/DataForTest.txt"))) {
             printWriter.println(person.getFirstName() + ";" + person.getLastName());
         } catch (FileNotFoundException e) {
             e.printStackTrace();

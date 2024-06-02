@@ -13,10 +13,6 @@ class MainPage extends PageBase {
         super(driver);
         this.driver.get("https://cartographia.hu/");
     }
-    
-    public By getMapsAndGuidebookOfEuropeButton() {
-        return mapsAndGuidebookOfEuropeButton;
-    }
 
     public String getFooterText() {
         return this.waitAndReturnElement(footerBy).getText();
@@ -37,5 +33,9 @@ class MainPage extends PageBase {
 
     public By getMapsAndGuidebookDropdownMenu() {
         return mapsAndGuidebookDropdownMenu;
+    }
+    
+    public By getMapsAndGuidebookOfEuropeButton() {
+        return mapsAndGuidebookOfEuropeButton;
     }
 }

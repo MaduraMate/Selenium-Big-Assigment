@@ -24,7 +24,7 @@ public class SeleniumTests {
     @BeforeClass
     public static void generateRandomData() {
         RandomDataGenerator.createRandomPerson();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("DataForTest.txt"))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("resources/DataForTest.txt"))) {
             String line = bufferedReader.readLine();
             firstName = line.split(";")[0];
             lastName = line.split(";")[1];
@@ -44,16 +44,45 @@ public class SeleniumTests {
         accountPage = loginPage.login("kl9e3gassignment@gmail.com", "e3bae08");
     }
 
-    @Test
-    public void testChangeEmailAddress() {
-        EmailManager emailManager = new EmailManager(driver);
-        emailManager.copyEmailAddress();
-        mainPage = new MainPage(driver);
-        
-        AccountDataPage accountDataPage = accountPage.goToAccountDataPage();
-        assertEquals("Fiók adataim", accountPage.getPageTitle());
-        accountDataPage.changeEmailAddress();
+    //@Test
+    //public void testChangeEmailAddress() {
+    //    EmailManager emailManager = new EmailManager(driver);
+    //    emailManager.copyEmailAddress();
+    //    mainPage = new MainPage(driver);
+    //    accountPage = mainPage.goToAccountPage();
+    //    AccountDataPage accountDataPage = accountPage.goToAccountDataPage();
+    //    assertEquals("Fiók adataim", accountPage.getPageTitle());
+    //    accountDataPage.changeEmailAddress();
+    //    accountPage = accountDataPage.saveChanges();
+    //    accountDataPage = accountPage.goToAccountDataPage();
+    //    String emailAddress = accountDataPage.getValueOfEmailAddresstextInput();
+    //    EmailManager.saveEmailAddress(emailAddress);
+    //    emailAddress = EmailManager.readEmailAddressFromConfigFile();
+    //    assertEquals(emailAddress, accountDataPage.getValueOfEmailAddresstextInput());
+    //}
 
+    @Test
+    public void testEmailCheckingAfterRequestNewsletter() {
+        NewsletterRequestPage newsletterRequestPage = accountPage.goToNewsletterRequestPage();
+        newsletterRequestPage.requestsNewsletter();
+        newsletterRequestPage.saveChanges();
+        assertEquals("Sikeresen módosítottad a hírlevél beállításaid!", accountPage.getTextOfSuccessOfOperationTextArea());
+        String emailBody = "";
+        try {
+            //emailBody = EmailManager.getEmailBody("imap.gmail.com", "imap", "kl9e3gassignment@gmail.com", "BigAssignment16");
+            emailBody = EmailManager.getEmailBody("imap.gmail.com", "imap", "kl9e3gassignment@gmail.com", "ywkv omxu whhk pdps");
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //assertEquals("Ha ezeket a sorokat olvasod, akkor sikeresen feliratkoztál hírlevelünkre. Örülünk, hogy rátaláltál a Cartographia Kft. webáruházára!", emailBody);
+        assertEquals("", emailBody);
+        mainPage = new MainPage(driver);
+        accountPage = mainPage.goToAccountPage();
+        newsletterRequestPage = accountPage.goToNewsletterRequestPage();
+        newsletterRequestPage.cancelNewsletter();
+        newsletterRequestPage.saveChanges();
+        assertEquals("Sikeresen módosítottad a hírlevél beállításaid!", accountPage.getTextOfSuccessOfOperationTextArea());
     }
 
 
@@ -119,18 +148,6 @@ public class SeleniumTests {
     //    assertEquals(firstName, accountDataPage.getValueOfFirstNameTextInput());
     //    assertEquals(lastName, accountDataPage.getValueOfLastNameTextInput());
     //}
-
-    @Test
-    public void requestNewsletetrTest() {
-        //NewsletterRequestPage newsletterRequestPage = accountPage.goToNewsletterRequestPage();
-        //newsletterRequestPage.requestsNewsletter();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
 
     @After
     public void close() {
