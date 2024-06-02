@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -11,9 +15,18 @@ public class LoginPage extends PageBase {
         super(driver);
     }
 
-    public AccountPage login(String userName, String password) {
+    public AccountPage login() {
+        String username = "";
+        String password = "";
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("resources/Auth.txt"))) {
+            String line = bufferedReader.readLine();
+            username = line.split(";")[0];
+            password = line.split(";")[1];
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.waitAndReturnElement(userNameTextField).click();
-        this.waitAndReturnElement(userNameTextField).sendKeys(userName);
+        this.waitAndReturnElement(userNameTextField).sendKeys(username);
         this.waitAndReturnElement(passwordTextField).click();
         this.waitAndReturnElement(passwordTextField).sendKeys(password);
         this.waitAndReturnElement(loginButton).click();

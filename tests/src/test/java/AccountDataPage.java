@@ -3,8 +3,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 
 public class AccountDataPage extends BaseFormPage {
-    By firstNameTextInput = By.xpath("//input[@name='firstname'][@class='form-control']");
-    By lastNameTextInput = By.xpath("//input[@name='lastname'][@class='form-control']");
+    By firstNameTextInput = By.xpath("//input[@name='lastname'][@class='form-control']");
+    By lastNameTextInput = By.xpath("//input[@name='firstname'][@class='form-control']");
     By emailAdressTextInput = By.xpath("//input[@name='email'][@class='form-control']");
 
     public AccountDataPage(WebDriver driver) {

@@ -83,7 +83,7 @@ class PageBase {
         WebElement dropown = this.waitAndReturnElement(dropdownElement);
         actions.moveToElement(dropown).perform();
         try {
-            Thread.sleep(2000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
