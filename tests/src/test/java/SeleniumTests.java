@@ -52,7 +52,7 @@ public class SeleniumTests {
     @Test
     public void testLogout() {
         LoginPage loginPage = accountPage.logout();
-        assertEquals("Belépés", loginPage.getTextOfLoginPageButton());
+        assertEquals("Belépés", loginPage.getTextOfGoToLoginPageButton());
     }
 
     @Test
@@ -98,7 +98,7 @@ public class SeleniumTests {
         String emailBody = "";
         try {
             Thread.sleep(15000);
-            emailBody = EmailManager.getEmailBody();
+            emailBody = EmailManager.getLastEmailBody();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -143,10 +143,11 @@ public class SeleniumTests {
         assertEquals("A Kárpátok falitérkép 96x68 cm - választható kivitel", goodsViewPage.getProductName());
     }
 
+    @Test
     public void testHover() {
         mainPage = accountPage.goToMainPage();
         mainPage.hover(mainPage.getMapsAndGuidebookDropdownMenu());
-        assertEquals("Európa", mainPage.getMapsAndGuidebookOfEuropeButton());
+        assertEquals("Európa", mainPage.textOfMapsAndGuidebookOfEuropeButton());
     }
 
     @After

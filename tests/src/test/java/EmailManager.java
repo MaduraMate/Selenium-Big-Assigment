@@ -15,7 +15,7 @@ import jakarta.mail.internet.MimeMultipart;
 
 public class EmailManager {
 
-    public static String getEmailBody() throws Exception {
+    public static String getLastEmailBody() throws Exception {
         String host = "imap.gmail.com";
         Properties properties = new Properties();
 

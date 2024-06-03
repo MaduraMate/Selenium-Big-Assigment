@@ -1,5 +1,4 @@
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 
 public class AccountDataPage extends BaseFormPage {
@@ -31,10 +30,5 @@ public class AccountDataPage extends BaseFormPage {
     public void changeLastName(String lastName) {
         this.waitAndReturnElement(lastNameTextInput).clear();
         this.waitAndReturnElement(lastNameTextInput).sendKeys(lastName);
-    }
-
-    public void changeEmailAddress() {
-        this.waitAndReturnElement(emailAdressTextInput).clear();
-        this.waitAndReturnElement(emailAdressTextInput).sendKeys(Keys.CONTROL, "v");
     }
 }

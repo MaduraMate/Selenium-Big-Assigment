@@ -24,4 +24,8 @@ class MainPage extends PageBase {
     public By getMapsAndGuidebookOfEuropeButton() {
         return mapsAndGuidebookOfEuropeButton;
     }
+
+    public String textOfMapsAndGuidebookOfEuropeButton() {
+        return this.waitAndReturnElement(mapsAndGuidebookOfEuropeButton).getText();
+    }
 }

@@ -41,7 +41,7 @@ class PageBase {
         return this.waitAndReturnElement(accountManagerDropdown);
     }
 
-    public String getTextOfLoginPageButton() {
+    public String getTextOfGoToLoginPageButton() {
         return this.waitAndReturnElement(goToLoginPageButton).getText();
     }
 
