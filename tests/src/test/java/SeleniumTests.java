@@ -1,9 +1,6 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -45,8 +42,6 @@ public class SeleniumTests {
         LoginPage loginPage = mainPage.goToLoginPage();
         accountPage = loginPage.login();
     }
-
-    /*
 
     @Test
     public void testLogin() {
@@ -103,7 +98,7 @@ public class SeleniumTests {
         String emailBody = "";
         try {
             Thread.sleep(15000);
-            emailBody = EmailManager.getEmailBody("imap.gmail.com", "imap");
+            emailBody = EmailManager.getEmailBody();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -130,7 +125,7 @@ public class SeleniumTests {
         assertEquals("Fiók adataim", accountDataPage.getPageTitle());
         assertEquals(firstName, accountDataPage.getValueOfFirstNameTextInput());
         assertEquals(lastName, accountDataPage.getValueOfLastNameTextInput());
-    }*/
+    }
 
     @Test
     public void testGoodsViewAndWhishlistPages() {

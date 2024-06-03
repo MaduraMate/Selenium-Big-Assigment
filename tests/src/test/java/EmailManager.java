@@ -1,13 +1,7 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.jsoup.Jsoup;
 
 import jakarta.mail.BodyPart;
 import jakarta.mail.Flags;
@@ -21,7 +15,8 @@ import jakarta.mail.internet.MimeMultipart;
 
 public class EmailManager {
 
-    public static String getEmailBody(String host, String storeType) throws Exception {
+    public static String getEmailBody() throws Exception {
+        String host = "imap.gmail.com";
         Properties properties = new Properties();
 
         properties.put("mail.imap.host", host);
@@ -57,25 +52,28 @@ public class EmailManager {
 
     private static String getTextFromMessage(Message message) throws IOException, MessagingException {
         String result = "";
+
         if (message.isMimeType("text/plain")) {
             result = message.getContent().toString();
         } else if (message.isMimeType("multipart/*")) {
             MimeMultipart mimeMultipart = (MimeMultipart) message.getContent();
             result = getTextFromMimeMultipart(mimeMultipart);
         }
+        
         return result;
     }
     
-    private static String getTextFromMimeMultipart(
-            MimeMultipart mimeMultipart) throws IOException, MessagingException {
-    
+    private static String getTextFromMimeMultipart(MimeMultipart mimeMultipart) throws IOException, MessagingException {
         int count = mimeMultipart.getCount();
-        if (count == 0)
+        if (count == 0) {
             throw new MessagingException("Multipart with no body parts not supported.");
+        }
+
         boolean multipartAlt = new ContentType(mimeMultipart.getContentType()).match("multipart/alternative");
         if (multipartAlt) {
             return getTextFromBodyPart(mimeMultipart.getBodyPart(count - 1));
         }
+
         String result = "";
         for (int i = 0; i < count; i++) {
             BodyPart bodyPart = mimeMultipart.getBodyPart(i);
@@ -84,10 +82,9 @@ public class EmailManager {
         return result;
     }
     
-    private static String getTextFromBodyPart(
-            BodyPart bodyPart) throws IOException, MessagingException {
-        
+    private static String getTextFromBodyPart(BodyPart bodyPart) throws IOException, MessagingException {
         String result = "";
+
         if (bodyPart.isMimeType("text/plain")) {
             result = (String) bodyPart.getContent();
         } else if (bodyPart.isMimeType("text/html")) {
