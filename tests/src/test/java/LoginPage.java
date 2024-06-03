@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -18,13 +19,11 @@ public class LoginPage extends PageBase {
     public AccountPage login() {
         String username = "";
         String password = "";
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("resources/Auth.txt"))) {
-            String line = bufferedReader.readLine();
-            username = line.split(";")[0];
-            password = line.split(";")[1];
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        
+        Pair<String, String> pair = TestHelper.readFromFile("resources/Auth.txt");
+        username = pair.getLeft();
+        password = pair.getRight();
+        
         this.waitAndReturnElement(userNameTextField).click();
         this.waitAndReturnElement(userNameTextField).sendKeys(username);
         this.waitAndReturnElement(passwordTextField).click();

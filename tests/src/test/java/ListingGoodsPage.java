@@ -1,16 +1,16 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class ListingGoods extends PageBase {
+public class ListingGoodsPage extends PageBase {
     private By sortingOfGoodsDropdown = By.xpath("//select[@class='form-control']");
     private By firstItemOnPage = By.xpath("//div[@class='snapshot-list-container']//div[@class='snapshot-list-item list_prouctname'][1]");
-    
+    private String detailsButtonOfProduct = "//div[@class='snapshot-list-container']//div[contains(@class, 'list_div_item')][NNN]//a[@class='list-details-link']";
 
-    ListingGoods(WebDriver driver) {
+    ListingGoodsPage(WebDriver driver) {
         super(driver);
     }
     
-    public ListingGoods sortingGoodsBy(String sortBy) {
+    public ListingGoodsPage sortingGoodsBy(String sortBy) {
         this.waitAndReturnElement(sortingOfGoodsDropdown).click();
         By sortingGoodBy = By.xpath("//option[text()='" + sortBy + "']");
         
@@ -34,5 +34,10 @@ public class ListingGoods extends PageBase {
         }
 
         return "";
+    }
+
+    public GoodsViewPage viewProduct(int nth) {
+        this.waitAndReturnElement(this.calculateXPath(detailsButtonOfProduct, nth, 0)).click();
+        return new GoodsViewPage(driver);
     }
 }

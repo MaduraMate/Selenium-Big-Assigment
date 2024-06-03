@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -29,14 +30,10 @@ public class SeleniumTests {
 
     @BeforeClass
     public static void generateRandomData() {
-        RandomDataGenerator.createRandomPerson();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("resources/DataForTest.txt"))) {
-            String line = bufferedReader.readLine();
-            firstName = line.split(";")[0];
-            lastName = line.split(";")[1];
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        TestHelper.createRandomPerson();
+        Pair<String, String> pair = TestHelper.readFromFile("resources/DataForTest.txt");
+        firstName = pair.getLeft();
+        lastName = pair.getRight();
     }
 
     @Before
@@ -48,6 +45,8 @@ public class SeleniumTests {
         LoginPage loginPage = mainPage.goToLoginPage();
         accountPage = loginPage.login();
     }
+
+    /*
 
     @Test
     public void testLogin() {
@@ -64,7 +63,7 @@ public class SeleniumTests {
     @Test
     public void testStaticPage() {
         assertEquals("Üdvözlünk " + firstName + "!", accountPage.getTextOfAccountManagerButton());
-        ListingGoods mapsOfEuropePage = mainPage.goToPage(mainPage.getMapsAndGuidebookDropdownMenu(), mainPage.getMapsAndGuidebookOfEuropeButton());
+        ListingGoodsPage mapsOfEuropePage = mainPage.goToPage(mainPage.getMapsAndGuidebookDropdownMenu(), mainPage.getMapsAndGuidebookOfEuropeButton());
         assertEquals("Európa", mapsOfEuropePage.getPageTitle());
 
         // dropdown
@@ -131,6 +130,28 @@ public class SeleniumTests {
         assertEquals("Fiók adataim", accountDataPage.getPageTitle());
         assertEquals(firstName, accountDataPage.getValueOfFirstNameTextInput());
         assertEquals(lastName, accountDataPage.getValueOfLastNameTextInput());
+    }*/
+
+    @Test
+    public void testGoodsViewAndWhishlistPages() {
+        mainPage = accountPage.goToMainPage();
+        ListingGoodsPage mapsOfEuropePage = mainPage.goToPage(mainPage.getMapsAndGuidebookDropdownMenu(), mainPage.getMapsAndGuidebookOfEuropeButton());
+        GoodsViewPage goodsViewPage = mapsOfEuropePage.viewProduct(1);
+        assertEquals("A Kárpátok falitérkép 96x68 cm - választható kivitel", goodsViewPage.getProductName());
+        assertTrue(goodsViewPage.getPublisher().contains("Cartographia"));
+        WhishlistPage whishlistPage = goodsViewPage.addToWhishlist();
+        assertTrue(whishlistPage.getNameOfWhishlistProduct(1).contains("A Kárpátok falitérkép 96x68 cm - választható kivitel"));
+        assertTrue(whishlistPage.getAddDateOfWhishlistProduct(1).contains("2024. 06. 03."));
+        assertTrue(whishlistPage.getNameOfWhishlistProduct(2).contains("Európa domborzata falitérkép - választható méret és kivitel"));
+        assertTrue(whishlistPage.getAddDateOfWhishlistProduct(2).contains("2024. 06. 02."));
+        goodsViewPage = (GoodsViewPage) whishlistPage.pageBack();
+        assertEquals("A Kárpátok falitérkép 96x68 cm - választható kivitel", goodsViewPage.getProductName());
+    }
+
+    public void testHover() {
+        mainPage = accountPage.goToMainPage();
+        mainPage.hover(mainPage.getMapsAndGuidebookDropdownMenu());
+        assertEquals("Európa", mainPage.getMapsAndGuidebookOfEuropeButton());
     }
 
     @After

@@ -30,16 +30,12 @@ class PageBase {
     protected WebElement waitAndReturnElement(By locator) {
         this.wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         return this.driver.findElement(locator);
-    } 
-    
-    public String getBodyText() {
-        WebElement bodyElement = this.waitAndReturnElement(By.tagName("body"));
-        return bodyElement.getText();
     }
 
-    // public WebElement getLoginButton() {
-    //     return this.waitAndReturnElement(getLoginPageButton);
-    // }
+    protected By calculateXPath(String attribute, int nth, int offset) {
+        String[] splittedXPath = attribute.split("NNN");
+        return By.xpath(splittedXPath[0] + (nth + offset) + splittedXPath[1]);
+    }
 
     public WebElement getAccountManagerButton() {
         return this.waitAndReturnElement(accountManagerDropdown);
@@ -79,14 +75,18 @@ class PageBase {
         return this.waitAndReturnElement(pageTilte).getText();
     }
 
-    public PageBase dropDownAndClickButton(By dropdownElement, By buttonToChangePage) {
-        WebElement dropown = this.waitAndReturnElement(dropdownElement);
-        actions.moveToElement(dropown).perform();
+    public void hover(By element) {
+        WebElement webElement = this.waitAndReturnElement(element);
+        actions.moveToElement(webElement).perform();
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public PageBase dropDownAndClickButton(By dropdownElement, By buttonToChangePage) {
+        hover(dropdownElement);
         wait.until(ExpectedConditions.presenceOfElementLocated(buttonToChangePage));
 
         this.waitAndReturnElement(buttonToChangePage).click();
@@ -97,5 +97,10 @@ class PageBase {
     public PageBase goToPage(String url) {
         this.driver.get(url);
         return new PageBase(driver);
+    }
+
+    public PageBase pageBack() {
+        driver.navigate().back();
+        return this;
     }
 }

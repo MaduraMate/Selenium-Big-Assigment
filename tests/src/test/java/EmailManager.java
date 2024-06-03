@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jsoup.Jsoup;
 
 import jakarta.mail.BodyPart;
@@ -34,13 +35,9 @@ public class EmailManager {
         
         String userName = "";
         String password = "";
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("resources/Email.txt"))) {
-            String line = bufferedReader.readLine();
-            userName = line.split(";")[0];
-            password = line.split(";")[1];
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Pair<String, String> pair = TestHelper.readFromFile("resources/Email.txt");
+        userName = pair.getLeft();
+        password = pair.getRight();
 
         store.connect(host, userName, password);
 
